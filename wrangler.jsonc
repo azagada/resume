@@ -17,14 +17,3 @@
     "enabled": true
   }
 }
-{
-  // ...
-  "vars": {
-    "GRAPH_CLIENT_ID": "a51992c6-1f53-4b58-be36-71ab73b6b85a",
-    "GRAPH_TENANT_ID": "a51992c6-1f53-4b58-be36-71ab73b6b85a",
-    "MAIL_SENDER": "website.aldo@zagada.us",
-    "MAIL_TO": "aldo@zagada.co",
-    "TURNSTILE_HOSTNAMES": "aldo.zagada.me"
-  },
-  // ...
-}
