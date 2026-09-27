@@ -1,0 +1,659 @@
+/*
+  Site styles, layered on top of USWDS (assets/uswds/css/uswds.min.css).
+
+  Every color and typeface below is a USWDS design token; the token name is
+  noted beside each value so you can look it up at
+  https://designsystem.digital.gov/design-tokens/
+*/
+
+:root {
+  --site-green: #286846;        /* mint-60: buttons, links, labels */
+  --site-green-dark: #204e34;   /* mint-70: name, headings, contact band */
+  --site-green-darker: #193324; /* mint-80: pressed buttons */
+  --site-green-soft: #b4d0b9;   /* green-cool-20: borders, accents on dark green */
+  --site-green-pale: #dbebde;   /* green-cool-10: timeline line, skill tags */
+  --site-green-wash: #ecf3ec;   /* green-cool-5: summary box */
+  --site-ink: #1b1b1b;          /* ink */
+  --site-gray: #565c65;         /* base-dark */
+  --site-rule: #dfe1e2;         /* base-lighter */
+  --site-serif: "Merriweather Web", Georgia, Cambria, "Times New Roman", Times, serif;
+  --site-mono: "Roboto Mono Web", "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
+}
+
+/* USWDS only sets body type inside .usa-prose and its components; match it everywhere */
+body {
+  font-size: 1.06rem;
+  line-height: 1.5;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+
+/* ---------- Theme: hunter green ----------
+   The precompiled USWDS stylesheet uses the default blue theme. These rules
+   swap in green for the USWDS components this page uses. */
+
+.usa-button:not(.usa-button--outline, .usa-button--unstyled, :disabled, [aria-disabled="true"]) {
+  background-color: var(--site-green);
+}
+
+.usa-button:not(.usa-button--outline, .usa-button--unstyled, :disabled, [aria-disabled="true"]):hover {
+  background-color: var(--site-green-dark);
+}
+
+.usa-button:not(.usa-button--outline, .usa-button--unstyled, :disabled, [aria-disabled="true"]):active {
+  background-color: var(--site-green-darker);
+}
+
+.usa-button--outline:not(:disabled, [aria-disabled="true"]),
+.usa-button--outline:not(:disabled, [aria-disabled="true"]):visited {
+  box-shadow: inset 0 0 0 2px var(--site-green);
+  color: var(--site-green);
+}
+
+.usa-button--outline:not(:disabled, [aria-disabled="true"]):hover {
+  box-shadow: inset 0 0 0 2px var(--site-green-dark);
+  color: var(--site-green-dark);
+}
+
+.usa-button--outline:not(:disabled, [aria-disabled="true"]):active {
+  box-shadow: inset 0 0 0 2px var(--site-green-darker);
+  color: var(--site-green-darker);
+}
+
+.usa-button--unstyled,
+.usa-skipnav,
+.usa-footer__return-to-top a {
+  color: var(--site-green);
+}
+
+.usa-button--unstyled:hover,
+.usa-skipnav:hover,
+.usa-footer__return-to-top a:hover {
+  color: var(--site-green-dark);
+}
+
+.usa-button--unstyled:active,
+.usa-skipnav:active,
+.usa-footer__return-to-top a:active {
+  color: var(--site-green-darker);
+}
+
+.usa-menu-btn {
+  background-color: var(--site-green);
+}
+
+.usa-menu-btn:hover {
+  background-color: var(--site-green-dark);
+}
+
+@media (min-width: 64em) {
+  .usa-nav__primary > .usa-nav__primary-item > a:hover {
+    color: var(--site-green);
+  }
+
+  .usa-header--basic .usa-nav__link:hover::after,
+  .usa-header--basic .usa-nav__primary-item > .usa-current::after {
+    background-color: var(--site-green);
+  }
+}
+
+@media (max-width: 63.99em) {
+  .usa-nav__primary a:not(.usa-button):not(.usa-current):hover,
+  .usa-nav__primary .usa-current {
+    color: var(--site-green);
+  }
+
+  .usa-nav__primary .usa-current::after {
+    background-color: var(--site-green);
+  }
+}
+
+.usa-summary-box {
+  background-color: var(--site-green-wash);
+  border-color: var(--site-green-soft);
+}
+
+/* USWDS's focus outline (#2491ff) drops below 3:1 contrast on the green backgrounds */
+.site-glance :focus {
+  outline-color: #005ea2; /* blue-60v */
+}
+
+.site-contact .site-section__rail :focus {
+  outline-color: #fff;
+}
+
+
+/* ---------- Header: family emblem beside the name ---------- */
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* The emblem file is black; using it as a mask lets it take the site's green */
+.site-logo__mark {
+  flex: none;
+  height: 1.6em;
+  aspect-ratio: 1937.48 / 1409.71; /* the emblem's own proportions */
+  background-color: var(--site-green-dark);
+  -webkit-mask: url("../img/Zagada_Family_Icon_Black.svg") center / contain no-repeat;
+  mask: url("../img/Zagada_Family_Icon_Black.svg") center / contain no-repeat;
+}
+
+/* Windows high-contrast mode replaces background colors, so draw it in the text color */
+@media (forced-colors: active) {
+  .site-logo__mark {
+    background-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+
+/* Small monospace caps for labels: fact names and skill groups */
+.site-label,
+.site-facts dt {
+  margin: 0;
+  font-family: var(--site-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--site-gray);
+}
+
+
+/* ---------- Introduction ---------- */
+
+.site-hero {
+  padding: 2rem 0 3rem;
+}
+
+.site-hero__role {
+  margin: 0 0 0.75rem;
+  font-family: var(--site-mono);
+  font-size: 0.87rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--site-green);
+}
+
+.site-hero__name {
+  margin: 0 0 1.5rem;
+  font-family: var(--site-serif);
+  font-size: clamp(2.5rem, 1.4rem + 5vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--site-green-dark);
+  text-wrap: balance;
+}
+
+.site-hero__lead {
+  max-width: 40ch;
+  margin: 0;
+  font-size: clamp(1.2rem, 1.1rem + 0.4vw, 1.4rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.site-hero__actions {
+  margin-top: 2rem;
+}
+
+/* Filled from the contact list by site.js; only shown when printing */
+.site-print-contact {
+  display: none;
+}
+
+.site-glance {
+  margin-top: 2.5rem;
+}
+
+.site-facts {
+  margin: 0;
+}
+
+.site-facts > div + div {
+  margin-top: 0.75rem;
+}
+
+.site-facts dd {
+  margin: 0.125rem 0 0;
+}
+
+.site-glance__print {
+  margin: 1.25rem 0 0;
+}
+
+.site-glance__print .usa-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+@media (min-width: 64em) {
+  .site-hero {
+    padding: 3rem 0 4rem;
+  }
+
+  .site-glance {
+    margin-top: 0.5rem;
+  }
+}
+
+
+/* ---------- Sections: title on the left, content on the right ---------- */
+
+.site-section {
+  padding: 2.5rem 0 3rem;
+  border-top: 1px solid var(--site-rule);
+}
+
+.site-section__rail {
+  margin-bottom: 1.5rem;
+}
+
+.site-section__heading {
+  margin: 0;
+  font-family: var(--site-serif);
+  font-size: 1.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--site-green-dark);
+  text-wrap: balance;
+}
+
+.site-section__summary {
+  max-width: 30ch;
+  margin: 0.5rem 0 0;
+  color: var(--site-gray);
+}
+
+@media (min-width: 64em) {
+  .site-section {
+    padding: 4rem 0;
+  }
+
+  /* Keep the section title in view while its content scrolls past */
+  .site-section__rail {
+    position: sticky;
+    top: 2rem;
+    margin-bottom: 0;
+  }
+}
+
+
+/* ---------- Experience: the USWDS process list as a timeline ---------- */
+
+/* Move the line right to make room for the markers */
+.site-timeline {
+  padding-left: 1.75rem;
+}
+
+.site-timeline > .usa-process-list__item {
+  padding-bottom: 2.5rem;
+  padding-left: 2.25rem;
+}
+
+.site-timeline > .usa-process-list__item:not(:last-child) {
+  border-left-color: var(--site-green-pale);
+}
+
+/* Swap the step number for "Now" or the year the role ended, centered on the line */
+.site-timeline > .usa-process-list__item::before {
+  content: attr(data-marker);
+  /* The dates are already in the text, so screen readers skip the marker */
+  content: attr(data-marker) / "";
+  left: 2rem;
+  width: auto;
+  min-width: 3.4rem;
+  height: 1.75rem;
+  margin-top: -0.05rem;
+  padding: 0 0.5rem;
+  transform: translateX(-50%);
+  border-width: 0.1875rem;
+  border-color: var(--site-green-dark);
+  color: var(--site-green-dark);
+  font-family: var(--site-mono);
+  font-size: 0.8rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* A filled marker for roles you hold now */
+.site-timeline > .site-timeline__item--current::before {
+  background-color: var(--site-green-dark);
+  color: #fff;
+}
+
+.site-timeline__org {
+  margin-bottom: 0;
+}
+
+.site-timeline__dates {
+  margin: 0.125rem 0 0;
+  font-family: var(--site-mono);
+  font-size: 0.87rem;
+  color: var(--site-gray);
+}
+
+.site-timeline .usa-list,
+.site-extra .usa-list {
+  margin-top: 0.75rem;
+}
+
+/* Roles without dates, lined up with the timeline's text */
+.site-extra {
+  padding-left: 4.5rem;
+}
+
+.site-extra .site-label {
+  margin-bottom: 0.75rem;
+}
+
+.site-extra .usa-list {
+  margin-bottom: 0;
+}
+
+
+/* ---------- Skills ---------- */
+
+.site-skills__group + .site-skills__group {
+  margin-top: 1.5rem;
+}
+
+.site-skills__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-skills__list .usa-tag {
+  margin: 0;
+  padding: 0.25rem 0.625rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-transform: none;
+  color: var(--site-green-dark);
+  background-color: var(--site-green-pale);
+}
+
+
+/* ---------- Education ---------- */
+
+.site-credentials {
+  margin: 0;
+}
+
+.site-credentials .usa-icon-list__icon {
+  color: var(--site-green);
+}
+
+.site-credentials__title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.site-credentials__meta {
+  margin: 0.125rem 0 0;
+  color: var(--site-gray);
+}
+
+
+/* ---------- Contact ---------- */
+
+.site-contact {
+  border-top: 0;
+  color: #fff;
+  background-color: var(--site-green-dark);
+}
+
+.site-contact .site-section__heading {
+  color: var(--site-green-soft);
+}
+
+.site-contact a {
+  color: #fff;
+}
+
+.site-contact a:hover {
+  color: var(--site-green-pale);
+}
+
+.site-contact__lead {
+  margin: 0.75rem 0 1.25rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.site-contact__list {
+  margin: 0 0 2rem;
+}
+
+.site-contact__list .usa-icon-list__icon {
+  color: var(--site-green-soft);
+}
+
+/* The form sits on a white panel so USWDS form styles read as intended */
+.site-contact-form {
+  max-width: none;
+  padding: 1.5rem;
+  border-radius: 0.25rem;
+  color: var(--site-ink);
+  background-color: #fff;
+}
+
+.site-contact-form .usa-input,
+.site-contact-form .usa-textarea {
+  max-width: none;
+}
+
+.site-contact-form__note {
+  margin: 0;
+  color: var(--site-gray);
+}
+
+.site-contact-form__turnstile {
+  margin-top: 1.5rem;
+}
+
+.site-contact-form .usa-button {
+  margin-top: 1.5rem;
+}
+
+.site-contact-form__status:not(:empty) {
+  margin-top: 1rem;
+}
+
+@media (min-width: 40em) {
+  .site-contact-form {
+    padding: 2rem;
+  }
+}
+
+
+/* ---------- Footer ---------- */
+
+.site-footer .usa-footer__secondary-section p {
+  margin: 0.25rem 0;
+}
+
+
+/* ---------- Print: turns the page into a résumé ---------- */
+
+@media print {
+  @page {
+    margin: 1.5cm 1.8cm;
+  }
+
+  /* USWDS sizes text in rem, so a smaller root scales everything down for paper */
+  html {
+    font-size: 13px;
+  }
+
+  .usa-skipnav,
+  .usa-overlay,
+  .usa-header,
+  .site-hero__actions,
+  .site-glance,
+  .site-section__summary,
+  .site-contact,
+  .usa-footer__return-to-top {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .grid-container {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .site-hero {
+    padding: 0 0 1rem;
+  }
+
+  .site-hero__name {
+    margin-bottom: 0.5rem;
+    font-size: 30pt;
+  }
+
+  .site-hero__lead {
+    max-width: none;
+    font-size: 12pt;
+  }
+
+  .site-print-contact {
+    display: block;
+    margin-top: 0.75rem;
+  }
+
+  .site-print-contact .usa-icon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin: 0;
+  }
+
+  .site-print-contact .usa-icon-list__item {
+    padding: 0;
+    border: 0;
+  }
+
+  .site-print-contact .usa-icon-list__icon {
+    color: var(--site-green-dark);
+  }
+
+  .site-print-contact .usa-icon-list__content {
+    font-size: inherit;
+  }
+
+  .site-section {
+    padding: 0.75rem 0 0.25rem;
+    border-top: 1px solid var(--site-rule);
+  }
+
+  /* Title and content are stacked on paper; don't let a page break separate them */
+  .site-section .grid-row {
+    display: block;
+  }
+
+  .site-section .grid-row > :first-child {
+    break-after: avoid;
+  }
+
+  .site-section__rail {
+    position: static;
+    margin-bottom: 0.5rem;
+  }
+
+  .site-section__heading {
+    font-size: 16pt;
+  }
+
+  /* Long roles may continue on the next page, but never split a bullet
+     or separate a job title from its employer and dates */
+  .usa-list li,
+  .usa-icon-list__item,
+  .site-skills__group {
+    break-inside: avoid;
+  }
+
+  .usa-process-list__heading,
+  .site-timeline__org,
+  .site-timeline__dates,
+  .site-extra .site-label {
+    break-after: avoid;
+  }
+
+  .site-timeline > .usa-process-list__item {
+    padding-top: 0.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .site-timeline .usa-list {
+    margin-top: 0.5rem;
+  }
+
+  .site-timeline > .site-timeline__item--current::before {
+    background-color: #fff;
+    color: var(--site-green-dark);
+  }
+
+  /* Skills as one compact line per group: "CORE COMPETENCIES  Month-end close, …" */
+  .site-skills__group {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .site-skills__group + .site-skills__group {
+    margin-top: 0.25rem;
+  }
+
+  .site-skills__group .site-label {
+    flex: 0 0 12rem;
+  }
+
+  .site-skills__list {
+    display: block;
+    margin: 0;
+  }
+
+  .site-skills__list .usa-tag {
+    display: inline;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+  }
+
+  .site-skills__list .usa-tag:not(:last-child)::after {
+    content: ",";
+  }
+
+  .usa-footer__secondary-section {
+    padding: 0.5rem 0 0;
+    background: none;
+    font-size: 9pt;
+  }
+}
