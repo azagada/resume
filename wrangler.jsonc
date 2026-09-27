@@ -1,0 +1,19 @@
+// Cloudflare Workers settings. Cloudflare reads this file when it deploys the site.
+{
+  // Must match the Worker's name in the Cloudflare dashboard
+  "name": "resume",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    // Everything visitors see
+    "directory": "./site",
+    // Contact-form requests go to the Worker; everything else is served straight from site/
+    "run_worker_first": ["/api/*"]
+  },
+  // Keep the settings you add in the dashboard (Settings → Variables and Secrets) on every deploy
+  "keep_vars": true,
+  // Keep the Worker's log messages (for example, "Microsoft sign-in failed") in the dashboard
+  "observability": {
+    "enabled": true
+  }
+}
