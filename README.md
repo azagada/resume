@@ -1,6 +1,6 @@
 # Aldo Zagada: résumé website
 
-A one-page résumé site built with the [U.S. Web Design System (USWDS) 3](https://designsystem.digital.gov/), plus one small server function that emails you contact-form messages through Microsoft 365. It's designed to be hosted on [Cloudflare Pages](https://pages.cloudflare.com/).
+A one-page résumé site built with the [U.S. Web Design System (USWDS) 3](https://designsystem.digital.gov/), plus a small Cloudflare Worker that emails you contact-form messages through Microsoft 365. It's designed to be hosted on [Cloudflare Workers](https://developers.cloudflare.com/workers/).
 
 ## What's in this folder
 
@@ -9,9 +9,11 @@ site/                     everything visitors see
   index.html              the page
   assets/css/site.css     your styles and the hunter-green theme
   assets/js/site.js       print button, contact form, Turnstile, header highlighting
-  assets/img/             family emblem and browser-tab icon
+  assets/img/             family emblem, browser-tab icon, and link-preview image
   assets/uswds/           USWDS files (managed by the update script)
-functions/api/contact.js  the contact form's server code (never sent to visitors)
+worker/index.js           sends contact-form requests to contact.js (never sent to visitors)
+worker/contact.js         checks the form and Turnstile, then emails you through Microsoft 365
+wrangler.jsonc            tells Cloudflare where the site and the Worker are
 scripts/update-uswds.py   downloads and installs USWDS
 .claude/launch.json       preview settings for Claude; safe to delete
 ```
@@ -40,8 +42,8 @@ The family emblem in the header comes from `site/assets/img/Zagada_Family_Icon_B
 ## How the contact form works
 
 1. A visitor fills in their name, email, subject, and message, and passes Cloudflare's Turnstile check.
-2. The form sends everything to `functions/api/contact.js` on Cloudflare.
-3. The function asks Cloudflare whether the Turnstile check was genuine, then asks Microsoft 365 to email you the message. The subject reads "Website message: …", and **Reply-To** is the visitor's address, so hitting Reply answers them directly.
+2. The form sends everything to `worker/contact.js`, which runs on Cloudflare.
+3. The Worker asks Cloudflare whether the Turnstile check was genuine, then asks Microsoft 365 to email you the message. The subject reads "Website message: …", and **Reply-To** is the visitor's address, so hitting Reply answers them directly.
 
 Your email address, the Turnstile secret key, and the Microsoft credentials all live in Cloudflare's encrypted settings. None of them appears on the page.
 
@@ -103,39 +105,58 @@ Remove-ManagementScope -Identity "Resume website sender"
 Remove-ServicePrincipal -Identity "Resume website contact form"
 ```
 
-### 4. Publish on Cloudflare Pages
+### 4. Publish on Cloudflare Workers
 
-Cloudflare only runs the form's server code for sites deployed from Git (or its command-line tool), not from drag-and-drop uploads.
+Cloudflare builds the site from GitHub each time you push a change.
 
-1. Put this folder in a GitHub repository.
-2. In the [Cloudflare dashboard](https://dash.cloudflare.com/), go to **Workers & Pages → Create → Pages → Connect to Git** and pick the repository. Set **Build command** to nothing and **Build output directory** to `site`.
-3. After the first deploy, open the project's **Settings → Variables and Secrets** and add these for Production. Mark the two secrets as **Secret**.
+1. Put this whole folder in a GitHub repository, including `wrangler.jsonc` and `worker/`.
+2. In the [Cloudflare dashboard](https://dash.cloudflare.com/), go to **Workers & Pages → Create** and import the repository. Use these settings:
+
+   | Setting | Value |
+   | --- | --- |
+   | Project name | `resume` (must match `"name"` in `wrangler.jsonc`) |
+   | Build command | Leave empty |
+   | Deploy command | `npx wrangler deploy` (the default) |
+   | Path | `/` (the top of the repository, where `wrangler.jsonc` is) |
+   | API token | Let Cloudflare create one |
+   | Variables | Leave empty. These are only for the build step; your settings go in step 3. |
+
+3. After the first deploy, open the Worker's **Settings → Variables and Secrets** and add these. Choose **Secret** for the two keys and **Text** for the rest. `wrangler.jsonc` tells Cloudflare to keep them on every deploy.
 
    | Name | Value |
    | --- | --- |
    | `TURNSTILE_SECRET` | Secret key from your Turnstile widget's settings |
-   | `TURNSTILE_HOSTNAMES` | Where the site runs, comma-separated, e.g. `your-project.pages.dev,yourdomain.com,www.yourdomain.com` |
+   | `TURNSTILE_HOSTNAMES` | Where the site runs, comma-separated: the `resume.….workers.dev` address on the Worker's overview page, plus any custom domain |
    | `GRAPH_TENANT_ID` | Directory (tenant) ID from step 2 |
    | `GRAPH_CLIENT_ID` | Application (client) ID from step 2 |
    | `GRAPH_CLIENT_SECRET` | Client secret value from step 2 |
    | `MAIL_SENDER` | The sending mailbox, e.g. `website@yourdomain.com` |
    | `MAIL_TO` | Where you want messages delivered (optional; defaults to `MAIL_SENDER`) |
 
-4. Redeploy (under **Deployments**, retry the latest one) so the function picks up the settings.
-5. In your Turnstile widget's **Hostname management**, add the same hostnames you listed in `TURNSTILE_HOSTNAMES`.
-6. Send yourself a test message, then reply to it to confirm Reply-To goes to the address you typed.
+4. In your Turnstile widget's **Hostname management**, add the same hostnames you listed in `TURNSTILE_HOSTNAMES`.
+5. Send yourself a test message, then reply to it to confirm Reply-To goes to the address you typed.
+
+To use your own domain, open the Worker's **Settings → Domains & Routes** and add a custom domain. The domain needs to use Cloudflare for its DNS. Then add it to `TURNSTILE_HOSTNAMES` and to the Turnstile widget.
 
 ### If a test message fails
 
 The message on the form tells you where to look:
 
-- **"The contact form isn't set up yet"**: a setting from step 4 is missing. Its name appears in the project's function logs (**Deployments → your deployment → Functions**).
+- **"The contact form isn't set up yet"**: a setting from section 4 is missing. Its name appears in the Worker's **Logs**.
 - **"The security check didn't go through"**: `TURNSTILE_SECRET` is wrong, or the site's hostname is missing from `TURNSTILE_HOSTNAMES` or from the widget.
-- **"Your message didn't send"**: Microsoft refused. In the function logs, "sign-in failed (HTTP 401)" means a wrong tenant ID, client ID, or secret. "sendMail failed (HTTP 403)" means step 3 hasn't taken effect yet, or `MAIL_SENDER` isn't the mailbox in the scope.
+- **"Your message didn't send"**: Microsoft refused. In the Worker's **Logs**, "sign-in failed (HTTP 401)" means a wrong tenant ID, client ID, or secret. "sendMail failed (HTTP 403)" means section 3 hasn't taken effect yet, or `MAIL_SENDER` isn't the mailbox in the scope.
 
-### Optional: test the function on your computer
+### Optional: test the Worker on your computer
 
-This needs [Node.js](https://nodejs.org/). Put the settings in a file named `.dev.vars` in this folder (one `NAME=value` per line; `.gitignore` keeps it out of Git), then run `npx wrangler pages dev site`. Use Cloudflare's test keys so Turnstile passes locally: site key `1x00000000000000000000AA` and secret `1x0000000000000000000000000000000AA`.
+This needs [Node.js](https://nodejs.org/). Put the settings in a file named `.dev.vars` in this folder (one `NAME=value` per line; `.gitignore` keeps it out of Git), then run `npx wrangler dev`. Use Cloudflare's test keys so Turnstile passes locally: site key `1x00000000000000000000AA` and secret `1x0000000000000000000000000000000AA`.
+
+## Link previews
+
+When someone shares your link on LinkedIn, in a text message, or in other apps, the preview shows `site/assets/img/share.png`: "AZ" in white on your hunter green. To change it, replace that file with another 1200 × 630 PNG and keep the name. Link-preview images can't be SVG.
+
+The preview tags near the top of `site/index.html` use your full address, `https://aldo.zagada.me`. If you ever move the site to a different domain, update the addresses there too.
+
+Apps save a copy of a preview the first time they see a link. After you change the image or the page title, paste your link into LinkedIn's [Post Inspector](https://www.linkedin.com/post-inspector/) to make LinkedIn fetch the new version.
 
 ## Print or save as PDF
 

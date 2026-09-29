@@ -19,7 +19,7 @@
     printContact.append(contactList.cloneNode(true));
   }
 
-  // Send the contact form to functions/api/contact.js without leaving the page.
+  // Send the contact form to worker/contact.js on Cloudflare without leaving the page.
   const form = document.querySelector("[data-contact-form]");
   if (form) {
     const status = form.querySelector("[data-form-status]");
@@ -91,7 +91,7 @@
           form.reset();
           showStatus("success", "Message sent. Thanks for reaching out; I'll reply by email.");
         } else if (result?.error) {
-          // functions/api/contact.js explains what to fix
+          // worker/contact.js explains what to fix
           showStatus("error", result.error);
         } else if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
           showStatus("error", "The form's email function only runs on Cloudflare, so it can't send from this local preview.");
