@@ -480,6 +480,22 @@ body {
   margin-top: 1rem;
 }
 
+/* Links on the white form panel; the rest of the contact band uses white links */
+.site-contact-form a {
+  color: var(--site-green);
+}
+
+.site-contact-form a:hover {
+  color: var(--site-green-dark);
+}
+
+.site-contact-form__privacy {
+  max-width: 60ch;
+  margin: 1rem 0 0;
+  font-size: 0.93rem;
+  color: var(--site-gray);
+}
+
 @media (min-width: 40em) {
   .site-contact-form {
     padding: 2rem;
