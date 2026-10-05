@@ -65,61 +65,103 @@
 
   <main id="main-content">
 
-    <!-- ============ Introduction ============ -->
-    <section class="site-hero" aria-labelledby="page-title">
+    <!-- ============ Experience ============ -->
+    <section class="site-section" id="experience" aria-labelledby="experience-heading">
       <div class="grid-container">
-        <p class="site-hero__role">Accounting &amp; finance</p>
-        <h1 class="site-hero__name" id="page-title">Aldo Zagada</h1>
-
         <div class="grid-row grid-gap-lg">
-          <div class="desktop:grid-col-7">
-            <p class="site-hero__lead">Accounting professional with 8+ years of hands-on experience in month-end close, reconciliations, multi-entity and intercompany accounting, and payroll accounting, for a high-growth national staffing organization and for small-business clients.</p>
-            <ul class="usa-button-group site-hero__actions">
-              <li class="usa-button-group__item">
-                <a class="usa-button usa-button--big" href="#contact">Send a message</a>
-              </li>
-              <li class="usa-button-group__item">
-                <a class="usa-button usa-button--big usa-button--outline" href="https://www.linkedin.com/in/aldozagada">Connect on LinkedIn</a>
-              </li>
-            </ul>
-            <!-- When printing, site.js fills this with the contact list from the bottom of the page -->
-            <div class="site-print-contact" data-print-contact></div>
+          <div class="desktop:grid-col-4">
+            <div class="site-section__rail">
+              <h2 class="site-section__heading" id="experience-heading">Experience</h2>
+              <p class="site-section__summary">A trusted partner to operations and leadership in fast-paced environments.</p>
+            </div>
           </div>
+          <div class="desktop:grid-col-8">
+            <!--
+              One <li> per role, most recent first.
+              data-marker is the text on the timeline: "Now" for a current role, otherwise the year it ended.
+              Add "site-timeline__item--current" to roles you hold now.
+            -->
+            <ol class="usa-process-list site-timeline">
+              <li class="usa-process-list__item site-timeline__item--current" data-marker="Now">
+                <h3 class="usa-process-list__heading">Director of Accounting</h3>
+                <p class="site-timeline__org">Apex Operations Management, LLC · Liberty, MO</p>
+                <p class="site-timeline__dates"><time datetime="2026-10">Oct 2026</time> – present</p>
+                <ul class="usa-list">
+                  <li>Lead the accounting and financial reporting functions for multiple affiliated companies, supervising the accounting team and reporting to the Chief Strategy Officer.</li>
+                  <li>Oversee daily cash balances and banking activity, and prepare and maintain cash-flow forecasts to support management decisions.</li>
+                  <li>Manage the month-end close and prepare financial statements, including review of bank and credit-card reconciliations.</li>
+                  <li>Manage intercompany accounting and reconciliations, and review payroll and shared-cost allocations across affiliated entities.</li>
+                  <li>Oversee accounts payable and payment processes, maintaining strong internal controls and complete supporting documentation.</li>
+                  <li>Monitor budgets and financial performance, identifying accounting issues early and developing solutions to keep leadership informed.</li>
+                  <li>Coordinate tax, audit, and lender deliverables with outside CPAs, tax advisors, auditors, and lenders.</li>
+                  <li>Document critical accounting processes and cross-train staff to strengthen continuity and reduce key-person risk.</li>
+                </ul>
+              </li>
+              <li class="usa-process-list__item site-timeline__item--current" data-marker="Now">
+                <h3 class="usa-process-list__heading">Owner / Bookkeeper</h3>
+                <p class="site-timeline__org">Cumulas, Inc. · Blue Springs, MO</p>
+                <p class="site-timeline__dates"><time datetime="2018-02">Feb 2018</time> – present</p>
+                <ul class="usa-list">
+                  <li>Provide full-cycle bookkeeping and payroll services for small business clients across multiple industries.</li>
+                  <li>Manage monthly reconciliations, financial statements, and reporting to support owner decision-making.</li>
+                  <li>Ensure compliance with local, state, and federal employment and business regulations.</li>
+                  <li>Act as primary finance contact for clients, advising on financial best practices and cash flow management.</li>
+                  <li>Maintain accurate accounting records using cloud-based accounting platforms.</li>
+                </ul>
+              </li>
+              <li class="usa-process-list__item" data-marker="2026">
+                <h3 class="usa-process-list__heading">Financial Systems Analyst</h3>
+                <p class="site-timeline__org">Krucial Rapid Response, Inc. · Lenexa, KS</p>
+                <p class="site-timeline__dates"><time datetime="2020-05">May 2020</time> – <time datetime="2026-10">Oct 2026</time></p>
+                <ul class="usa-list">
+                  <li>Supported accounting operations for a high-growth, multi-entity staffing organization operating at a national scale.</li>
+                  <li>Assisted with month-end close activities, including reconciliations, expense review, and financial data validation.</li>
+                  <li>Analyzed intercompany transactions to ensure accuracy and proper reporting across entities.</li>
+                  <li>Partnered with HR, operations, and leadership to identify process gaps and improve financial and data workflows.</li>
+                  <li>Supported payroll-related financial analysis and accounting system integrations.</li>
+                  <li>Assisted with compliance efforts related to federal, state, and local employment regulations.</li>
+                  <li>Participated in accounting system, HRIS, and financial data migrations to improve reporting and data integrity.</li>
+                </ul>
+              </li>
+              <li class="usa-process-list__item" data-marker="2020">
+                <h3 class="usa-process-list__heading">Employment Specialist</h3>
+                <p class="site-timeline__org">Murphy-Hoffman Company · Leawood, KS</p>
+                <p class="site-timeline__dates"><time datetime="2019-04">Apr 2019</time> – <time datetime="2020-04">Apr 2020</time></p>
+                <ul class="usa-list">
+                  <li>Conducted background checks and employment verifications.</li>
+                  <li>Onboarded new hires into HRIS systems.</li>
+                  <li>Supported HR leadership with compliance reviews and documentation.</li>
+                </ul>
+              </li>
+              <li class="usa-process-list__item" data-marker="2019">
+                <h3 class="usa-process-list__heading">Customer Service Representative</h3>
+                <p class="site-timeline__org">Vistar Kansas City · Riverside, MO</p>
+                <p class="site-timeline__dates"><time datetime="2017-06">Jun 2017</time> – <time datetime="2019-04">Apr 2019</time></p>
+                <ul class="usa-list">
+                  <li>Managed high-volume inbound customer calls and order processing.</li>
+                  <li>Handled credit inquiries and account issues in a fast-paced environment.</li>
+                </ul>
+              </li>
+              <li class="usa-process-list__item" data-marker="2017">
+                <h3 class="usa-process-list__heading">Second Assistant Manager</h3>
+                <p class="site-timeline__org">Hy-Vee, Inc. · Blue Springs, MO</p>
+                <p class="site-timeline__dates"><time datetime="2014-11">Nov 2014</time> – <time datetime="2017-05">May 2017</time></p>
+                <ul class="usa-list">
+                  <li>Assisted with front-end operations and inventory counts.</li>
+                  <li>Supported daily operational and customer service activities.</li>
+                </ul>
+              </li>
+            </ol>
 
-          <div class="desktop:grid-col-5">
-            <div class="usa-summary-box site-glance" role="region" aria-labelledby="glance-heading">
-              <div class="usa-summary-box__body">
-                <h2 class="usa-summary-box__heading" id="glance-heading">At a glance</h2>
-                <dl class="usa-summary-box__text site-facts">
-                  <div>
-                    <dt>Focus</dt>
-                    <dd>Month-end close, reconciliations, multi-entity and intercompany accounting, payroll accounting</dd>
-                  </div>
-                  <div>
-                    <dt>Systems</dt>
-                    <dd>Sage Intacct, QuickBooks Online, Xero, Workday</dd>
-                  </div>
-                  <div>
-                    <dt>Education</dt>
-                    <dd>Master of Professional Accountancy, in progress</dd>
-                  </div>
-                  <div>
-                    <dt>Location</dt>
-                    <dd>Kansas City Metropolitan Area · open to remote or hybrid work</dd>
-                  </div>
-                  <div>
-                    <dt>Languages</dt>
-                    <dd>English and Spanish</dd>
-                  </div>
-                </dl>
-                <!-- Shown by assets/js/site.js; opens the browser's print dialog -->
-                <p class="site-glance__print" data-print hidden>
-                  <button type="button" class="usa-button usa-button--unstyled">
-                    <svg class="usa-icon" aria-hidden="true" focusable="false" role="img"><use href="assets/uswds/img/sprite.svg#print"></use></svg>
-                    Print or save as PDF
-                  </button>
-                </p>
-              </div>
+            <div class="site-extra">
+              <h3 class="site-label">Additional experience</h3>
+              <h4 class="usa-process-list__heading">Director of Communication (Board Member)</h4>
+              <p class="site-timeline__org">SDA Multicultural Community Church · Kansas City, MO</p>
+              <ul class="usa-list">
+                <li>Served on the board, supporting organizational oversight.</li>
+                <li>Assisted with technology management and internal communication.</li>
+                <li>Temporarily supported treasury functions and financial management.</li>
+              </ul>
             </div>
           </div>
         </div>
